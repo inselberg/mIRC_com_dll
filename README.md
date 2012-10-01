@@ -9,8 +9,10 @@ install
 IMPORTANT: use the regasm from a framework >=4 
 
 register:
+
 	C:\...\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe /codebase Release\mIRC_com_dll.dll
 unregister:
+
 	C:\...\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe /unregister Release\mIRC_com_dll.dll
 
 
@@ -21,6 +23,7 @@ test (mIRC)
 	/load -rs scripts/mirccomdll.mrc
 
 and test it with:
+
 	/co
 	/status
 
@@ -83,4 +86,4 @@ list of commands
 
 todo:
 -----
-write a todo list
+write a todo list ;)
