@@ -73,3 +73,13 @@ alias loadit {
   //var %result = $com(lmirc,load,1,bstr,c:\mirc.queue.txt)
   echo 7 $+ loaded...: $com(lmirc).result
 }
+
+alias insert {
+  //var %result = $com(lmirc,Insert,1,bstr,$1-)
+  echo 7 $+ Insert: $com(lmirc).result
+}
+
+alias delete {
+  //var %result = $com(lmirc,Delete,1,int,$1-)
+  echo 7 $+ Delete: $com(lmirc).result
+}

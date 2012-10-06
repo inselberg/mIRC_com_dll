@@ -89,6 +89,11 @@ list of commands
         [DispId(14)]
         string Save(string fileName);
 
+		[DispId(15)]
+        string Insert(string str, int index = 0);
+
+        [DispId(16)]
+        void Delete(int index);
 
 todo:
 -----

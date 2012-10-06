@@ -57,23 +57,11 @@ namespace mIrcComDll
         [DispId(14)]
         string Save(string fileName);
 
+        [DispId(15)]
+        string Insert(string str, int index = 0);
 
-        /*
-        [DispId(6)]
-        int Delete(string str);
-
-        
-        [DispId(8)]
-        void AddItem();
-
-        [DispId(9)]
-        string AddItemStr();
-
-
-        */
-
-
-
+        [DispId(16)]
+        void Delete(int index);
 
     }
 
@@ -92,15 +80,16 @@ namespace mIrcComDll
         private readonly List<string> liste = new List<string>() { };
         private int cursor = -1;
         private DateTime startTime = DateTime.Now;
+        private string currentStr = "";
 
         public string Version()
         {
-            return "0.031";
+            return "0.04";
         }
 
         public string Status()
         {
-            return String.Format("[Position: {0}/{1}] [FirstDateTime: {2}] [Running: {3}] [Current: {4}]  ", cursor + 1, Count(), startTime, Math.Truncate((DateTime.Now - startTime).TotalMinutes), Current());
+            return String.Format("[Position: {0}/{1}] [FirstDateTime: {2}] [Running: {3}] [Current: {4}]  ", cursor + 1, Count(), startTime, Math.Truncate((DateTime.Now - startTime).TotalMinutes), currentStr);
         }
 
         public void Clear()
@@ -114,23 +103,31 @@ namespace mIrcComDll
         {
             startTime = DateTime.Now;
             cursor = 0;
+            SetCurrentStr();
+
             if (isInRange(cursor))
                 return liste[cursor];
             else
                 return "";
         }
 
+        // used to avoid that Current() is changed if a item is insert at (the current) cursor position
+        public void SetCurrentStr()
+        {
+            if (isInRange(cursor)) currentStr = liste[cursor];
+        }
+
+
         public string Current()
         {
-            if (isInRange(cursor))
-                return liste[cursor];
-            else
-                return "";
+            SetCurrentStr();
+            return currentStr;
         }
 
         public string Last()
         {
             cursor = liste.Count - 1;
+            SetCurrentStr();
             if (isInRange(cursor)) return liste[cursor];
             return "";
         }
@@ -143,6 +140,7 @@ namespace mIrcComDll
         public string Next()
         {
             cursor++;
+            SetCurrentStr();
             if (isInRange(0)) return liste[cursor];
             return "";
         }
@@ -153,7 +151,6 @@ namespace mIrcComDll
         {
             // first element added, set cursor to first position
             if (liste.Count() == 0) cursor = 0;
-
 
             liste.Add(str);
             return String.Format("[{0}] ", str);
@@ -201,7 +198,10 @@ namespace mIrcComDll
                 {
                     liste.Add(file.ReadLine());
                 }
-            return String.Format("Loaded \"[{0}]\" ", fileName);
+
+            // Set cursor to the 1st position
+            if (isInRange(0)) cursor = 0;
+            return String.Format("Loaded [{0}]", fileName);
         }
 
 
@@ -212,41 +212,30 @@ namespace mIrcComDll
                 {
                     file.WriteLine(line);
                 }
-            return String.Format("Saved \"[{0}]\" ", fileName);
+            return String.Format("Saved [{0}]", fileName);
 
         }
 
-        /*
-        public int Delete(string str)
+
+        // -1 insert at cursor next position
+        public string Insert(string str, int index = -1)
         {
-            var1 = "Delete() aufgerufen";
-            liste.Remove(str);
-            return 0;
+            // insert at the 1st position of the queue or if still "running" after the current position
+            if (index == -1)
+            {
+                index = String.IsNullOrEmpty(str) ? 0 : cursor+1;
+            }
+            liste.Insert(index, str);
+            return String.Format("Insert [{0}] at {1}", str, index);
         }
 
-      
 
-        //
-        public void AddItem()
+        public void Delete(int index)
         {
-            var1 = "AddItem() aufgerufen";
-            Random random = new Random();
-            string str = random.Next(1000000, 999999).ToString();
-            
-
-            ///           liste.Add(str);
+            liste.RemoveAt(index);
         }
 
-        public string AddItemStr()
-        {
-            var1 = "AddItemStr() aufgerufen";
-        //    Random random = new Random();
-          //  string str = random.Next(1000000, 999999).ToString();
-            
-            return "str";
-            
-        }
-        */
+
 
 
     }
