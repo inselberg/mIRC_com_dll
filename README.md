@@ -47,7 +47,7 @@ check scripts/mirccomdll.mrc for examples
 list of commands
 ----------------
 
-		[DispId(1)]
+        [DispId(1)]
         string Version();
 
         [DispId(2)]
@@ -82,7 +82,13 @@ list of commands
 
         [DispId(12)]
         string GetItem(int idx);
-		
+
+        [DispId(13)]
+        string Load(string fileName);
+
+        [DispId(14)]
+        string Save(string fileName);
+
 
 todo:
 -----

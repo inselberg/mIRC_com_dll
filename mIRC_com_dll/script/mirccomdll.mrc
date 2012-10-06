@@ -63,3 +63,13 @@ alias clear {
   echo 7 $+ Cleared List: $com(lmirc).result
   $com(lmirc).result
 }
+
+alias saveit {
+  //var %result = $com(lmirc,save,1,bstr,c:\mirc.queue.txt)
+  echo 7 $+ saved...: $com(lmirc).result
+}
+
+alias loadit {
+  //var %result = $com(lmirc,load,1,bstr,c:\mirc.queue.txt)
+  echo 7 $+ loaded...: $com(lmirc).result
+}

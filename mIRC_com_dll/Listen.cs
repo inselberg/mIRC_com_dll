@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace mIrcComDll
 {
@@ -50,6 +51,12 @@ namespace mIrcComDll
         [DispId(12)]
         string GetItem(int idx);
 
+        [DispId(13)]
+        string Load(string fileName);
+
+        [DispId(14)]
+        string Save(string fileName);
+
 
         /*
         [DispId(6)]
@@ -88,7 +95,7 @@ namespace mIrcComDll
 
         public string Version()
         {
-            return "0.021";
+            return "0.031";
         }
 
         public string Status()
@@ -144,6 +151,10 @@ namespace mIrcComDll
 
         public string Add(string str)
         {
+            // first element added, set cursor to first position
+            if (liste.Count() == 0) cursor = 0;
+
+
             liste.Add(str);
             return String.Format("[{0}] ", str);
 
@@ -180,6 +191,29 @@ namespace mIrcComDll
             bool b = ((idx >= 0) && (idx < liste.Count));
             if (!b) cursor = -1;
             return b;
+        }
+
+        public string Load(string fileName = "mirc_com_dll.queue")
+        {
+            liste.Clear();
+            using (System.IO.StreamReader file = new System.IO.StreamReader(fileName))
+                while (file.Peek() >= 0)
+                {
+                    liste.Add(file.ReadLine());
+                }
+            return String.Format("Loaded \"[{0}]\" ", fileName);
+        }
+
+
+        public string Save(string fileName = "mirc_com_dll.queue")
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
+                foreach (string line in liste)
+                {
+                    file.WriteLine(line);
+                }
+            return String.Format("Saved \"[{0}]\" ", fileName);
+
         }
 
         /*
