@@ -95,6 +95,13 @@ list of commands
         [DispId(16)]
         void Delete(int index);
 
+
+history
+-------
+0.041:
+Bugfix
+
+
 todo:
 -----
 write a todo list ;)

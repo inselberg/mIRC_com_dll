@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.IO;
 
@@ -82,9 +80,27 @@ namespace mIrcComDll
         private DateTime startTime = DateTime.Now;
         private string currentStr = "";
 
+        #region Helper
+
+        private bool isInRange(int idx)
+        {
+            bool b = ((idx >= 0) && (idx < liste.Count));
+            if (!b) cursor = -1;
+            return b;
+        }
+       
+        
+        // used to avoid that Current() is changed if a item is insert at (the current) cursor position
+        private void SetCurrentStr()
+        {
+            if (isInRange(cursor)) currentStr = liste[cursor];
+        }
+
+        #endregion
+
         public string Version()
         {
-            return "0.04";
+            return "0.041";
         }
 
         public string Status()
@@ -111,12 +127,7 @@ namespace mIrcComDll
                 return "";
         }
 
-        // used to avoid that Current() is changed if a item is insert at (the current) cursor position
-        public void SetCurrentStr()
-        {
-            if (isInRange(cursor)) currentStr = liste[cursor];
-        }
-
+        
 
         public string Current()
         {
@@ -141,7 +152,7 @@ namespace mIrcComDll
         {
             cursor++;
             SetCurrentStr();
-            if (isInRange(0)) return liste[cursor];
+            if (isInRange(cursor)) return liste[cursor];
             return "";
         }
 
@@ -151,6 +162,8 @@ namespace mIrcComDll
         {
             // first element added, set cursor to first position
             if (liste.Count() == 0) cursor = 0;
+            if (String.IsNullOrEmpty(currentStr)) SetCurrentStr();
+            //
 
             liste.Add(str);
             return String.Format("[{0}] ", str);
@@ -182,32 +195,27 @@ namespace mIrcComDll
         }
 
 
-        // 
-        bool isInRange(int idx)
-        {
-            bool b = ((idx >= 0) && (idx < liste.Count));
-            if (!b) cursor = -1;
-            return b;
-        }
-
         public string Load(string fileName = "mirc_com_dll.queue")
         {
             liste.Clear();
-            using (System.IO.StreamReader file = new System.IO.StreamReader(fileName))
+            using (StreamReader file = new StreamReader(fileName))
                 while (file.Peek() >= 0)
                 {
                     liste.Add(file.ReadLine());
                 }
 
             // Set cursor to the 1st position
-            if (isInRange(0)) cursor = 0;
+            if (isInRange(0)) {
+                cursor = 0;
+                SetCurrentStr();
+            }
             return String.Format("Loaded [{0}]", fileName);
         }
 
 
         public string Save(string fileName = "mirc_com_dll.queue")
         {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
+            using (StreamWriter file = new StreamWriter(fileName))
                 foreach (string line in liste)
                 {
                     file.WriteLine(line);
