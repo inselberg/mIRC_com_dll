@@ -1,12 +1,17 @@
-mIRC_com_dll
-------------
+# mIRC_com _dll
+
+----------
+
 Example of a mIRC com.library in c#.
 Adding an easy way to handle lists in mIRC.
 
 
-install
--------
-IMPORTANT: use the regasm from a framework >=4 
+
+## Install
+
+----------
+
+IMPORTANT: use the _regasm.exe_ from a framework >=4 
 
 register:
 
@@ -18,8 +23,10 @@ unregister:
 
 
 
-test (mIRC) 
------------
+## Test ([mirc](http://www.mirc.com)) 
+
+----------
+
 	/load -rs scripts/mirccomdll.mrc
 
 and test it with:
@@ -28,9 +35,12 @@ and test it with:
 	/status
 
 
-commands
---------
+## Commands
+
+----------
+
 List of commands and return value.
+
 Using: 
 
 	var %result = $com(lmirc,<COMMAND>,1)
@@ -41,11 +51,13 @@ or functions with parameters
 	var %result = $com(lmirc,<COMMAND>,1,<bstr OR int>,<VALUE>)
 	echo $com(lmirc).result
 
-check scripts/mirccomdll.mrc for examples
+Check `scripts/mirccomdll.mrc` for examples.
 
 
-list of commands
-----------------
+
+## List of commands
+
+----------
 
         [DispId(1)]
         string Version();
@@ -96,12 +108,18 @@ list of commands
         void Delete(int index);
 
 
-history
--------
-0.041:
-Bugfix
+## History
+
+----------
+
+###0.041
+
+- Bugfix
+- Nicer `Readme.md`
 
 
-todo:
------
-write a todo list ;)
+## Todo
+
+----------
+
+Write a todo list ;)
